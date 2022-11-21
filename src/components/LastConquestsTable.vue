@@ -1,16 +1,16 @@
 <script setup lang='ts'>
 import { ref } from 'vue';
 
-let lastConquests = ref<Conquer[] | null>(null);
+let lastConquests = ref<ConquestRecord[] | null>(null);
 
 async function getLastConquests() {
     const response = await fetch('/api/interface/get_conquer');
-    const conquests = await response.json() as Conquer[] | undefined;
+    const conquests = await response.json() as ConquestRecord[] | undefined;
 
     if (Array.isArray(conquests) && conquests.length > 0) {
         while (conquests.length > 5) conquests.pop();
         conquests.sort((a, b) => b.time - a.time);
-        return conquests as Conquer[];
+        return conquests as ConquestRecord[];
     };
 
     return null;
@@ -34,8 +34,8 @@ async function getLastConquests() {
             <template v-for="conquest of lastConquests">
                 <tr>
                     <td> {{ new Date(conquest.time).toLocaleTimeString('pt-br') }}</td>
-                    <td> {{ conquest.village_id }} </td>
-                    <td> {{ conquest.points }} </td>
+                    <td> {{ conquest.village }} </td>
+                    <td> {{ conquest.village_points }} </td>
                     <td> {{ conquest.old_owner }} </td>
                     <td> {{ conquest.new_owner }} </td>
                 </tr>
@@ -46,7 +46,7 @@ async function getLastConquests() {
     
 </template>
 
-<style>
+<style scoped>
 div {
     text-align: center;
 }

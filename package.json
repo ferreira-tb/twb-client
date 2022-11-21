@@ -1,7 +1,6 @@
 {
     "name": "twb-client",
     "version": "1.0.0",
-
     "scripts": {
         "dev": "vite",
         "build": "run-p type-check build-only",
@@ -9,11 +8,10 @@
         "build-only": "vite build",
         "type-check": "vue-tsc --noEmit"
     },
-
     "dependencies": {
-        "vue": "^3.2.41"
+        "vue": "^3.2.41",
+        "vue-router": "^4.1.6"
     },
-
     "devDependencies": {
         "@types/node": "^16.11.68",
         "@vitejs/plugin-vue": "^3.1.2",

@@ -1,0 +1,17 @@
+body {
+    background-color: #1a1a1a;
+    color: #e1e1e1;
+}
+
+a {
+    outline: none;
+    text-decoration: none;
+}
+
+a:link, a:visited {
+    color: #42b883;
+}
+
+a:hover {
+    color: #4cf0a6;
+}
