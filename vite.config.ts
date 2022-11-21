@@ -15,7 +15,18 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                target: 'http://localhost:3000',
+                target: 'http://localhost:3000/',
+                configure: (proxy, _options) => {
+                    proxy.on('error', (err, _req, _res) => {
+                        console.log('proxy error', err);
+                    });
+                    proxy.on('proxyReq', (_proxyReq, req, _res) => {
+                        console.log('Sending request to the target:', req.method, req.url);
+                    });
+                    proxy.on('proxyRes', (proxyRes, req, _res) => {
+                        console.log('Received response from the target:', proxyRes.statusCode, req.url);
+                    });
+                }
             },
         }
     }
