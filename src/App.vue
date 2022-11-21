@@ -1,17 +1,40 @@
 <script setup lang='ts'>
-import NavBar from './components/NavBar.vue';
+import NavBar from '@/components/NavBar.vue';
 
 
 </script>
 
 <template>
-<NavBar />
-<router-view />
+<NavBar class="nav-bar"/>
+<main class="main-area">
+    <router-view id="main_view"/>
+</main>
+
   
 </template>
 
 <style scoped>
-h1 {
-    text-align: center;
+.nav-bar {
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    height: 30px;
+    width: 100%;
+    border-bottom: 1px solid #363636;
+    z-index: 9999;
+}
+main.main-area {
+    position: fixed;
+    top: 30px;
+    bottom: 0;
+    width: 100%;
+}
+
+#main_view {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 </style>

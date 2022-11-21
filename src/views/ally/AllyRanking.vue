@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <h2>Últimas Conquistas</h2>
+
 </template>
 
 <style scoped>

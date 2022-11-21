@@ -10,10 +10,15 @@ interface Conquer {
     readonly points: number;
 }
 
+// Após oo filtro presente no construtor da classe,
+// apenas "old_tribe" e "new_tribe" podem ser "null".
 interface ConquestRecord {
-    readonly time: number;
+    readonly time: string;
     readonly village: string;
-    readonly village_points: number;
+    readonly village_points: string;
     readonly new_owner: string;
     readonly old_owner: string;
+    readonly old_tribe: string | null;
+    readonly new_tribe: string | null;
+    readonly raw: Conquer;
 }
