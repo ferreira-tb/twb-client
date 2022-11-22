@@ -15,3 +15,15 @@ a:link, a:visited {
 a:hover {
     color: #4cf0a6;
 }
+
+td, th {
+    color: #e1e1e1;
+}
+
+th.table-header {
+    text-align: center !important;
+    padding-right: 0 !important;
+    padding-bottom: 10px !important;
+    color: #42b883 !important;
+    font-size: larger;
+}

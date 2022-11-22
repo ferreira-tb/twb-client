@@ -1,73 +1,33 @@
 <script setup lang='ts'>
-import type { ConquestRecord } from 'index';
-import { ref } from 'vue';
+import { worldKey } from '@/keys';
+import { inject, type Ref } from 'vue';
 
-let lastConquests = ref<ConquestRecord[] | null>(null);
+const props = defineProps<{
+    conquests: ConquestRecord[]
+}>();
 
-async function getConquests() {
-    const response = await fetch('/api/interface/get_conquer');
-    const conquests = await response.json() as ConquestRecord[] | undefined;
-
-    if (Array.isArray(conquests) && conquests.length > 0) {
-        conquests.sort((a, b) => b.raw.time - a.raw.time);
-        return conquests as ConquestRecord[];
-    };
-
-    return null;
-};
-
-(async () => {
-    lastConquests.value = await getConquests();
-    // setInterval(async () => lastConquests.value = await getConquests(), 60000 * 10);
-})();
-
+const world = inject(worldKey) as Readonly<Ref<string>>;
 </script>
 
 <template>
-    <div>
-        <table v-if="lastConquests">
-            <tr>
-                <th>Hora</th>
-                <th>Aldeia</th>
-                <th>Pontos</th>
-                <th>Proprietário anterior</th>
-                <th>Novo proprietário</th>
-            </tr>
-            <template v-for="conquest of lastConquests">
-                <tr>
-                    <td> {{ conquest.time }}</td>
-                    <td> {{ conquest.village }} </td>
-                    <td> {{ conquest.village_points }} </td>
-                    <td>
-                        {{ conquest.old_owner }}
-                        {{ conquest.old_tribe ? ` (${conquest.old_tribe})` : '' }}
-                    </td>
-                    <td>
-                        {{ conquest.new_owner }}
-                        {{ conquest.new_tribe ? ` (${conquest.new_tribe})` : '' }}
-                    </td>
-                </tr>
-            </template>
-        </table>
-        <p v-else>Nenhuma conquista registrada.</p>
-    </div>
+    <tr v-for="conquest of props.conquests">
+        <td> {{ conquest.time }}</td>
+        <td> {{ conquest.village }} </td>
+        <td> {{ conquest.village_points }} </td>
+        <td>
+            <router-link v-if="conquest.raw.old_owner_id !== 0"
+                :to="{ name: 'player', params: { world: world, id: String(conquest.raw.old_owner_id) } }
+            ">
+                {{ conquest.old_owner }}
+            </router-link>
+            <span v-else>{{ conquest.old_owner }}</span>
+            {{ conquest.old_tribe ? ` (${conquest.old_tribe})` : '' }}
+        </td>
+        <td>
+            <router-link :to="{ name: 'player', params: { world: world, id: String(conquest.raw.old_owner_id) } }">
+                {{ conquest.new_owner }}
+            </router-link>
+            {{ conquest.new_tribe ? ` (${conquest.new_tribe})` : '' }}
+        </td>
+    </tr>
 </template>
-
-<style scoped>
-div {
-    margin-top: 5px;
-    text-align: center;
-}
-
-table {
-    width: 100%;
-}
-
-th {
-    font-weight: bold;
-}
-
-p {
-    font-style: italic;
-}
-</style>

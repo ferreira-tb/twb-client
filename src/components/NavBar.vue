@@ -1,29 +1,31 @@
 <script setup lang='ts'>
-import { ref } from 'vue';
-const world = ref('116');
+import { inject, type Ref } from 'vue';
+import { worldKey } from '@/keys.js';
+
+const world = inject(worldKey) as Readonly<Ref<string>>;
 
 </script>
 
 <template>
 <nav>
     <div>
-        <router-link :to="{ name: 'Início' }" class="home-page-link">
+        <router-link :to="{ name: 'home' }" class="home-page-link">
             Tribal Wars Brasil – Mundo {{ world }}
         </router-link>
     </div>
     <div class="nav-bar-menu">
         <div>
-            <router-link :to="{ name: 'Jogadores' }">
+            <router-link :to="{ name: 'player_ranking', params: { world: world } }">
                 Jogadores
             </router-link>
         </div>
         <div>
-            <router-link :to="{ name: 'Tribos' }">
+            <router-link :to="{ name: 'ally_ranking', params: { world: world } }">
                 Tribos
             </router-link>
         </div>
         <div>
-            <router-link :to="{ name: 'Conquistas' }">
+            <router-link :to="{ name: 'conquests', params: { world: world } }">
                 Conquistas
             </router-link>
         </div>

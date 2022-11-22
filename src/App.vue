@@ -1,13 +1,12 @@
 <script setup lang='ts'>
 import NavBar from '@/components/NavBar.vue';
 
-
 </script>
 
 <template>
 <NavBar class="nav-bar"/>
-<main class="main-area">
-    <router-view id="main_view"/>
+<main>
+    <router-view class="main-view"/>
 </main>
 
   
@@ -22,16 +21,16 @@ import NavBar from '@/components/NavBar.vue';
     height: 30px;
     width: 100%;
     border-bottom: 1px solid #363636;
-    z-index: 9999;
 }
-main.main-area {
+
+main {
     position: fixed;
     top: 30px;
     bottom: 0;
     width: 100%;
 }
 
-#main_view {
+.main-view {
     height: 100%;
     width: 100%;
     overflow-x: hidden;
