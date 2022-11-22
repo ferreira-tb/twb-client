@@ -14,16 +14,19 @@ const player = ref<PlayerInfo | null>(null);
 
 // Nome do jogador.
 const playerName = computed(() => {
-    return player.value?.player_name ? player.value.player_name : 'Não existe';
+    return player.value?.player_name ? player.value.player_name : 'Jogador não encontrado';
 });
 
 // Nome da tribo.
+const noAlly = ref<boolean>(true);
 const allyName = computed(() => {
     const fullName = player.value?.ally_name;
-    if (!fullName) return 'Não existe';
-    const allyTag = player.value?.ally_tag;
+    if (!fullName) return 'Nenhuma';
+    noAlly.value = false;
 
+    const allyTag = player.value?.ally_tag;
     if (allyTag) return `${fullName} (${allyTag})`;
+
     return fullName;
 });
 
@@ -79,7 +82,7 @@ const playerVillages = ref<ExtendedVillage[] | null>(null);
                 </tr>
                 <tr>
                     <th scope="row">Tribo</th>
-                    <td>{{ allyName }}</td>
+                    <td :class="{ 'no-ally': noAlly }">{{ allyName }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Pontos</th>
@@ -147,5 +150,9 @@ img.profile-image {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+td.no-ally {
+    font-style: italic;
 }
 </style>
