@@ -1,12 +1,12 @@
 <script setup lang='ts'>
-import { worldKey } from '@/keys';
-import { inject, type Ref } from 'vue';
+import { world as worldKey, type WorldKey } from '@/keys';
+import { inject } from 'vue';
 
 const props = defineProps<{
     conquests: ConquerInfo[]
 }>();
 
-const world = inject(worldKey) as Readonly<Ref<string>>;
+const { world } = inject(worldKey) as WorldKey;
 const params = (value: number) => {
     return { name: 'player', params: { world: world.value, id: String(value) } };
 };

@@ -1,9 +1,9 @@
 <script setup lang='ts'>
-import { worldKey } from '@/keys';
-import { inject, ref, type Ref } from 'vue';
+import { world as worldKey, type WorldKey } from '@/keys';
+import { inject, ref } from 'vue';
 import ConquestsTable from '@/components/conquer/ConquestsTable.vue';
 
-const world = inject(worldKey) as Readonly<Ref<string>>;
+const { world } = inject(worldKey) as WorldKey;
 
 const lastConquests = ref<ConquerInfo[] | null>(null);
 const isLoading = ref<boolean>(true);

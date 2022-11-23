@@ -1,16 +1,15 @@
 <script setup lang='ts'>
-import { inject, type Ref } from 'vue';
-import { worldKey } from '@/keys.js';
+import { inject } from 'vue';
+import { world as worldKey, type WorldKey } from '@/keys.js';
 
-const world = inject(worldKey) as Readonly<Ref<string>>;
-
+const { world } = inject(worldKey) as WorldKey;
 </script>
 
 <template>
 <nav>
     <div>
         <router-link :to="{ name: 'home' }" class="home-page-link">
-            Tribal Wars Brasil – Mundo {{ world }}
+            Insidious – Mundo {{ world }}
         </router-link>
     </div>
     <div class="nav-bar-menu">

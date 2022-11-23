@@ -1,6 +1,28 @@
+:root {
+    --main-bg-color: #1a1a1a;
+
+    --main-color: #e1e1e1;
+    --sec-color: #42b883;
+    --sec-color-lighter: #4cf0a6;
+}
+
+/** Classes globais */
+.main-color {
+    color: var(--main-color);
+}
+
+.sec-color {
+    color: var(--sec-color);
+}
+
+.italic {
+    font-style: italic;
+}
+
+/** Elementos */
 body {
-    background-color: #1a1a1a;
-    color: #e1e1e1;
+    background-color: var(--main-bg-color);
+    color: var(--main-color);
 }
 
 a {
@@ -9,25 +31,21 @@ a {
 }
 
 a:link, a:visited {
-    color: #42b883;
+    color: var(--sec-color);
 }
 
 a:hover {
-    color: #4cf0a6;
+    color: var(--sec-color-lighter);
 }
 
 td, th {
-    color: #e1e1e1;
+    color: var(--main-color);
 }
 
+/** Outros */
 th.table-header {
     text-align: center !important;
     padding-right: 0 !important;
     padding-bottom: 10px !important;
-    color: #42b883 !important;
     font-size: larger;
-}
-
-.italic {
-    font-style: italic;
 }

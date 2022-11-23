@@ -1,9 +1,9 @@
 <script setup lang='ts'>
-import { worldKey } from '@/keys';
-import { inject, ref, type Ref } from 'vue';
+import { world as worldKey, type WorldKey } from '@/keys';
+import { inject, ref } from 'vue';
 import PlayerRankingTable from '@/components/player/PlayerRankingTable.vue';
 
-const world = inject(worldKey) as Readonly<Ref<string>>;
+const { world } = inject(worldKey) as WorldKey;
 
 const playerRanking = ref<PlayerInfo[] | null>(null);
 const isLoading = ref<boolean>(true);
@@ -30,7 +30,7 @@ const isLoading = ref<boolean>(true);
             <PlayerRankingTable :players="playerRanking"/>
         </table>
         <p class="italic" v-else-if="isLoading">Carregando...</p>
-        <p class="italic" v-else>Nenhuma conquista registrada.</p>
+        <p class="italic" v-else>Nenhum jogador foi encontrado.</p>
     </div>
 </template>
 

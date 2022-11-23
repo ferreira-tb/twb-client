@@ -1,9 +1,9 @@
 <script setup lang='ts'>
-import { worldKey } from '@/keys';
+import { world as worldKey, type WorldKey } from '@/keys';
 import { inject, ref, type Ref } from 'vue';
 import AllyRankingTable from '@/components/ally/AllyRankingTable.vue';
 
-const world = inject(worldKey) as Readonly<Ref<string>>;
+const { world } = inject(worldKey) as WorldKey;
 
 const allyRanking = ref<AllyInfo[] | null>(null);
 const isLoading = ref<boolean>(true);
@@ -32,7 +32,7 @@ const isLoading = ref<boolean>(true);
             <AllyRankingTable :allies="allyRanking"/>
         </table>
         <p class="italic" v-else-if="isLoading">Carregando...</p>
-        <p class="italic" v-else>Nenhuma conquista registrada.</p>
+        <p class="italic" v-else>Nenhuma tribo foi encontrada.</p>
     </div>
 </template>
 
