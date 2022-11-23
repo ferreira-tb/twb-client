@@ -3,7 +3,7 @@ import { worldKey } from '@/keys';
 import { inject, type Ref } from 'vue';
 
 const props = defineProps<{
-    conquests: ConquestRecord[]
+    conquests: ConquerInfo[]
 }>();
 
 const world = inject(worldKey) as Readonly<Ref<string>>;

@@ -4,12 +4,8 @@ import NavBar from '@/components/NavBar.vue';
 </script>
 
 <template>
-<NavBar class="nav-bar"/>
-<main>
-    <router-view class="main-view"/>
-</main>
-
-  
+    <NavBar class="nav-bar"/>
+    <main><router-view class="main-view"/></main>
 </template>
 
 <style scoped>

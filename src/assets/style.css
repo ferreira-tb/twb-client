@@ -27,3 +27,7 @@ th.table-header {
     color: #42b883 !important;
     font-size: larger;
 }
+
+.italic {
+    font-style: italic;
+}

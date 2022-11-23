@@ -1,30 +1,19 @@
 <script setup lang='ts'>
 import { worldKey } from '@/keys';
 import { inject, ref, type Ref } from 'vue';
-import ConquestsTable from '@/components/ConquestsTable.vue';
+import ConquestsTable from '@/components/conquer/ConquestsTable.vue';
 
 const world = inject(worldKey) as Readonly<Ref<string>>;
 
-const lastConquests = ref<ConquestRecord[] | null>(null);
-async function getConquests() {
-    const response = await fetch(`/api/interface/${world.value}/get_conquer`);
-    const conquests = await response.json() as ConquestRecord[] | null;
-
-    if (Array.isArray(conquests) && conquests.length > 0) {
-        conquests.sort((a, b) => b.raw.time - a.raw.time);
-        return conquests as ConquestRecord[];
-    };
-
-    return null;
-};
-
+const lastConquests = ref<ConquerInfo[] | null>(null);
 const isLoading = ref<boolean>(true);
 (async () => {
-    lastConquests.value = await getConquests();
-    isLoading.value = false;
-    setInterval(async () => lastConquests.value = await getConquests(), 60000 * 10);
-})();
+    const response = await fetch(`/api/interface/${world.value}/get_conquer`);
+    const conquests = await response.json() as ConquerInfo[] | null;
 
+    lastConquests.value = conquests;
+    isLoading.value = false;
+})();
 </script>
 
 <template>
@@ -56,9 +45,5 @@ table {
 
 th {
     font-weight: bold;
-}
-
-p.italic {
-    font-style: italic;
 }
 </style>

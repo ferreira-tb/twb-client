@@ -10,7 +10,7 @@ interface Conquer {
 
 // Após oo filtro presente no construtor da classe,
 // apenas "old_tribe" e "new_tribe" podem ser "null".
-interface ConquestRecord {
+interface ConquerInfo {
     readonly time: string;
     readonly village: string;
     readonly village_points: string;
@@ -21,8 +21,23 @@ interface ConquestRecord {
     readonly raw: Conquer;
 }
 
+interface AllyInfo {
+    readonly ally_id: number;
+    readonly name: string;
+    readonly tag: string;
+    readonly member_amount: number;
+    readonly village_amount: number;
+    readonly points: number;
+    readonly all_points: number;
+    readonly rank: number;
+    readonly points_per_member: number;
+    readonly points_per_village: number;
+}
+
 interface PlayerInfo {
+    readonly player_id: number;
     readonly player_name: string;
+    readonly ally_id: number | null;
     readonly ally_name: string | null;
     readonly ally_tag: string | null;
     readonly village_amount: number;
@@ -31,7 +46,7 @@ interface PlayerInfo {
     readonly rank: number;
 }
 
-interface ExtendedVillage {
+interface VillageInfo {
     readonly village_id: number;
     readonly name: string;
     readonly x: number;

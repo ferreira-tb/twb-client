@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { ref, computed } from 'vue';
+import PlayerVillages from '@/components/player/PlayerVillages.vue';
 
 const props = defineProps<{
     world: string
@@ -48,22 +49,27 @@ const profileImage = ref<string | null>(null);
     const htmlDocument = parser.parseFromString(page, 'text/html').documentElement;
     // Exemplo: https://dsbr.innogamescdn.com/asset/49b70961/graphic/userimage/359921_large
     const imageSrc = htmlDocument.querySelector('img[src*="userimage" i]')?.getAttribute('src');
+
     // Caso não encontre uma imagem, usa um avatar aleatório.
     if (!imageSrc) {
-        const avatarId = Math.floor(Math.random() * (26 - 1) + 1);
+        const avatarId = Math.floor(Math.random() * (25 - 1) + 1);
         profileImage.value = `https://dsbr.innogamescdn.com/asset/49b70961/graphic/avatar/${avatarId.toString(10)}.jpg`;
+    } else {
+        profileImage.value = imageSrc;
     };
 })();
 
-const playerVillages = ref<ExtendedVillage[] | null>(null);
+const playerVillages = ref<VillageInfo[] | null>(null);
 (async () => {
     const response = await fetch(`/api/query/${props.world}/player/${props.id}/villages`);
     if (response.status === 404) return;
-    const villages = await response.json() as ExtendedVillage[] | null;
+    const villages = await response.json() as VillageInfo[] | null;
     if (Array.isArray(villages) && villages.length > 0) {
         playerVillages.value = villages;
     };
 })();
+
+const playerLink = { name: 'player', params: { world: props.world, id: props.id } };
 </script>
 
 <template>
@@ -75,9 +81,7 @@ const playerVillages = ref<ExtendedVillage[] | null>(null);
             <table>
                 <tr>
                     <th scope="row" colspan="2" class="table-header">
-                        <router-link :to="{ name: 'player', params: { world: props.world, id: props.id } }">
-                            {{ playerName }}
-                        </router-link>
+                        <router-link :to="playerLink">{{ playerName }}</router-link>
                     </th>
                 </tr>
                 <tr>
@@ -103,23 +107,8 @@ const playerVillages = ref<ExtendedVillage[] | null>(null);
             </table>
         </div>
     </div>
-    <div class="player-villages">
-        <table v-if="playerVillages">
-            <tr>
-                <th>Aldeia</th>
-                <th>Pontos</th>
-                <th>Coordenadas</th>
-                <th>Continente</th>
-            </tr>
-            <template v-for="village of playerVillages">
-                <tr>
-                    <td> {{ village.name }}</td>
-                    <td> {{ village.points.toLocaleString('pt-br') }} </td>
-                    <td> {{ village.coords }} </td>
-                    <td> {{ village.continent }} </td>
-                </tr>
-            </template>
-        </table>
+    <div v-if="playerVillages">
+        <PlayerVillages :villages="playerVillages"/>
     </div>
 </template>
 
@@ -138,11 +127,6 @@ div.user-image-area {
     width: 270px;
     height: 180px;
     margin-right: 15px;
-}
-
-div.player-villages table {
-    width: 100%;
-    text-align: center;
 }
 
 img.profile-image {
