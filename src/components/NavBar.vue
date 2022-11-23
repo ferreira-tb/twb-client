@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { inject } from 'vue';
 import { world as worldKey, type WorldKey } from '@/keys.js';
+import { parseWorld } from '@/modules/world';
 
 const { world } = inject(worldKey) as WorldKey;
 </script>
@@ -9,7 +10,7 @@ const { world } = inject(worldKey) as WorldKey;
 <nav>
     <div>
         <router-link :to="{ name: 'home' }" class="home-page-link">
-            Insidious – Mundo {{ world }}
+            Insidious – {{ parseWorld(world) }}
         </router-link>
     </div>
     <div class="nav-bar-menu">
@@ -33,17 +34,17 @@ const { world } = inject(worldKey) as WorldKey;
 </template>
 
 <style scoped>
-div.nav-bar-menu {
+.nav-bar-menu {
     margin-right: 20px;
     display: flex;
 }
 
-div.nav-bar-menu div {
+.nav-bar-menu div {
     align-self: center;
     margin-left: 10px;
 }
 
-a.home-page-link {
+.home-page-link {
     font-size: larger;
     font-weight: bolder;
 }

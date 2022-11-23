@@ -17,17 +17,21 @@ const isLoading = ref<boolean>(true);
 </script>
 
 <template>
-    <div>
-        <table v-if="playerRanking">
-            <tr>
-                <th>Rank</th>
-                <th>Nome</th>
-                <th>Tribo</th>
-                <th>Pontos</th>
-                <th>Aldeias</th>
-                <th>Média por aldeia</th>
-            </tr>
-            <PlayerRankingTable :players="playerRanking"/>
+    <div class="ranking-container">
+        <table v-if="playerRanking" class="ranking-table">
+            <thead class="sticky-table-header">
+                <tr>
+                    <th>Rank</th>
+                    <th>Nome</th>
+                    <th>Tribo</th>
+                    <th>Pontos</th>
+                    <th>Aldeias</th>
+                    <th>Média por aldeia</th>
+                </tr>
+            </thead>
+            <tbody>
+                <PlayerRankingTable :players="playerRanking"/>
+            </tbody>
         </table>
         <p class="italic" v-else-if="isLoading">Carregando...</p>
         <p class="italic" v-else>Nenhum jogador foi encontrado.</p>
@@ -35,16 +39,13 @@ const isLoading = ref<boolean>(true);
 </template>
 
 <style scoped>
-div {
-    margin-top: 5px;
+.ranking-container {
+    margin-top: 0.5em;
     text-align: center;
 }
 
-table {
+.ranking-table {
     width: 100%;
-}
-
-th {
-    font-weight: bold;
+    margin-bottom: 2em;
 }
 </style>

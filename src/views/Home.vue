@@ -1,17 +1,10 @@
 <script setup lang='ts'>
-import * as key from '@/keys';
 import { inject } from 'vue';
+import * as key from '@/keys';
+import { parseWorld } from '@/modules/world';
 
 const allWorlds = inject(key.allWorlds, []);
 const { switchWorld } = inject(key.world) as key.WorldKey;
-
-function parseWorld(world: string) {
-    const worldNumber = world.replace(/\D/g, '');
-    if (world.startsWith('c')) return `Clássico ${worldNumber}`;
-    if (world.startsWith('p')) return `Casual ${worldNumber}`;
-    return `Mundo ${worldNumber}`;
-};
-
 </script>
 
 <template>

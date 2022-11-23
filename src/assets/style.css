@@ -19,6 +19,16 @@
     font-style: italic;
 }
 
+.sticky-table-header {
+    background-color: var(--main-bg-color);
+    position: sticky;
+    top: 0;
+}
+
+.sticky-table-header th {
+    padding-bottom: 0.5em;
+}
+
 /** Elementos */
 body {
     background-color: var(--main-bg-color);
@@ -40,12 +50,4 @@ a:hover {
 
 td, th {
     color: var(--main-color);
-}
-
-/** Outros */
-th.table-header {
-    text-align: center !important;
-    padding-right: 0 !important;
-    padding-bottom: 10px !important;
-    font-size: larger;
 }

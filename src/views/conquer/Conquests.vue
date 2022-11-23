@@ -17,16 +17,20 @@ const isLoading = ref<boolean>(true);
 </script>
 
 <template>
-    <div>
-        <table v-if="lastConquests">
-            <tr>
-                <th>Hora</th>
-                <th>Aldeia</th>
-                <th>Pontos</th>
-                <th>Proprietário anterior</th>
-                <th>Novo proprietário</th>
-            </tr>
-            <ConquestsTable :conquests="lastConquests"/>
+    <div class="conquests-container">
+        <table v-if="lastConquests" class="conquests-table">
+            <thead class="sticky-table-header">
+                <tr>
+                    <th>Hora</th>
+                    <th>Aldeia</th>
+                    <th>Pontos</th>
+                    <th>Proprietário anterior</th>
+                    <th>Novo proprietário</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ConquestsTable :conquests="lastConquests"/>
+            </tbody>
         </table>
         <p class="italic" v-else-if="isLoading">Carregando...</p>
         <p class="italic" v-else>Nenhuma conquista registrada.</p>
@@ -34,16 +38,13 @@ const isLoading = ref<boolean>(true);
 </template>
 
 <style scoped>
-div {
-    margin-top: 5px;
+.conquests-container {
+    margin-top: 0.5em;
     text-align: center;
 }
 
-table {
+.conquests-table {
     width: 100%;
-}
-
-th {
-    font-weight: bold;
+    margin-bottom: 2em;
 }
 </style>

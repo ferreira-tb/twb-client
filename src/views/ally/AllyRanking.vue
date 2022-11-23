@@ -17,19 +17,23 @@ const isLoading = ref<boolean>(true);
 </script>
 
 <template>
-    <div>
-        <table v-if="allyRanking">
-            <tr>
-                <th>Rank</th>
-                <th>Nome</th>
-                <th>Pontos</th>
-                <th>Pontos totais</th>
-                <th>Membros</th>
-                <th>Média por membro</th>
-                <th>Aldeias</th>
-                <th>Média por aldeia</th>
-            </tr>
-            <AllyRankingTable :allies="allyRanking"/>
+    <div class="ranking-container">
+        <table v-if="allyRanking" class="ranking-table">
+            <thead class="sticky-table-header">
+                <tr>
+                    <th>Rank</th>
+                    <th>Nome</th>
+                    <th>Pontos</th>
+                    <th>Pontos totais</th>
+                    <th>Membros</th>
+                    <th>Média por membro</th>
+                    <th>Aldeias</th>
+                    <th>Média por aldeia</th>
+                </tr>
+            </thead>
+            <tbody>
+                <AllyRankingTable :allies="allyRanking"/>
+            </tbody>
         </table>
         <p class="italic" v-else-if="isLoading">Carregando...</p>
         <p class="italic" v-else>Nenhuma tribo foi encontrada.</p>
@@ -37,16 +41,13 @@ const isLoading = ref<boolean>(true);
 </template>
 
 <style scoped>
-div {
-    margin-top: 5px;
+.ranking-container {
+    margin-top: 0.5em;
     text-align: center;
 }
 
-table {
+.ranking-table {
     width: 100%;
-}
-
-th {
-    font-weight: bold;
+    margin-bottom: 2em;
 }
 </style>

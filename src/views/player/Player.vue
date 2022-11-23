@@ -73,70 +73,91 @@ const playerLink = { name: 'player', params: { world: props.world, id: props.id 
 </script>
 
 <template>
-    <div class="user-profile">
-        <div class="user-image-area">
-            <img v-if="profileImage" :src="profileImage" class="profile-image">
+    <div class="player-view">
+        <div class="user-profile-container">
+            <div class="user-image-area">
+                <img v-if="profileImage" :src="profileImage" class="profile-image">
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <th scope="row" colspan="2" class="double-table-header">
+                            <router-link :to="playerLink">{{ playerName }}</router-link>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="row">Tribo</th>
+                        <td :class="{ italic: noAlly }">{{ allyName }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Pontos</th>
+                        <td>{{ playerPoints }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Aldeias</th>
+                        <td>{{ villageAmount }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Média por aldeia</th>
+                        <td>{{ meanPoints }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Ranking</th>
+                        <td>{{ playerRank }}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
-        <div>
-            <table>
-                <tr>
-                    <th scope="row" colspan="2" class="table-header">
-                        <router-link :to="playerLink">{{ playerName }}</router-link>
-                    </th>
-                </tr>
-                <tr>
-                    <th scope="row">Tribo</th>
-                    <td :class="{ 'no-ally': noAlly }">{{ allyName }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Pontos</th>
-                    <td>{{ playerPoints }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Aldeias</th>
-                    <td>{{ villageAmount }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Média por aldeia</th>
-                    <td>{{ meanPoints }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Ranking</th>
-                    <td>{{ playerRank }}</td>
-                </tr>
-            </table>
+        <div v-if="playerVillages" class="villages-container">
+            <PlayerVillages :villages="playerVillages"/>
         </div>
-    </div>
-    <div v-if="playerVillages">
-        <PlayerVillages :villages="playerVillages"/>
     </div>
 </template>
 
 <style scoped>
-div.user-profile {
+.player-view {
+    overflow: hidden;
+}
+
+.user-profile-container {
+    position: absolute;
+    top: 0;
     display: flex;
-    margin-top: 10px;
+    margin-top: 1em;
 }
 
-div.user-profile th {
+.villages-container {
+    position: absolute;
+    top: 200px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.user-profile-container th {
     text-align: left;
-    padding-right: 20px;
+    padding-right: 2em;
 }
 
-div.user-image-area {
+.user-image-area {
     width: 270px;
     height: 180px;
-    margin-right: 15px;
+    margin-right: 1em;
 }
 
-img.profile-image {
+.profile-image {
     position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-td.no-ally {
-    font-style: italic;
+.double-table-header {
+    text-align: center !important;
+    padding-right: 0 !important;
+    padding-bottom: 0.5em !important;
+    font-size: larger;
 }
 </style>

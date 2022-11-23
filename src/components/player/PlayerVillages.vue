@@ -6,26 +6,31 @@ const props = defineProps<{
 
 <template>
     <table class="player-villages">
-        <tr>
-            <th>Aldeia</th>
-            <th>Pontos</th>
-            <th>Coordenadas</th>
-            <th>Continente</th>
-        </tr>
-        <template v-for="village of props.villages">
+        <thead class="sticky-table-header">
             <tr>
-                <td> {{ village.name }}</td>
-                <td> {{ village.points.toLocaleString('pt-br') }} </td>
-                <td> {{ village.coords }} </td>
-                <td> {{ village.continent }} </td>
+                <th>Aldeia</th>
+                <th>Pontos</th>
+                <th>Coordenadas</th>
+                <th>Continente</th>
             </tr>
-        </template>
+        </thead>
+        <tbody>
+            <template v-for="village of props.villages">
+                <tr>
+                    <td> {{ village.name }}</td>
+                    <td> {{ village.points.toLocaleString('pt-br') }} </td>
+                    <td> {{ village.coords }} </td>
+                    <td> {{ village.continent }} </td>
+                </tr>
+            </template>
+        </tbody>
     </table>
 </template>
 
 <style scoped>
-table.player-villages {
+.player-villages {
     width: 100%;
     text-align: center;
+    margin-bottom: 2em;
 }
 </style>
