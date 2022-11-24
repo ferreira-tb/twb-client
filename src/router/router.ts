@@ -1,11 +1,11 @@
 import { createWebHistory, createRouter, type RouteRecordRaw } from "vue-router";
 import Home from '@/views/Home.vue';
-import Ally from '@/views/ally/Ally.vue';
-import AllyRanking from '@/views/ally/AllyRanking.vue';
-import PlayerRanking from '@/views/player/PlayerRanking.vue';
-import Player from '@/views/player/Player.vue';
-import Village from '@/views/village/Village.vue';
-import Conquests from '@/views/conquer/Conquests.vue';
+import Ally from '@/views/Ally.vue';
+import AllyRanking from '@/views/AllyRanking.vue';
+import PlayerRanking from '@/views/PlayerRanking.vue';
+import Player from '@/views/Player.vue';
+import Village from '@/views/Village.vue';
+import Conquests from '@/views/Conquests.vue';
 
 const world = ':world';
 const id = ':id(\\d+)';

@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { world as worldKey, type WorldKey } from '@/keys';
+import { world as worldKey, type WorldKey } from '@/common/keys.js';
 import { inject } from 'vue';
 
 const props = defineProps<{

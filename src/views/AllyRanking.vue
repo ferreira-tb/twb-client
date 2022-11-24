@@ -1,7 +1,7 @@
 <script setup lang='ts'>
-import { world as worldKey, type WorldKey } from '@/keys';
+import { world as worldKey, type WorldKey } from '@/common/keys.js';
 import { inject, ref, type Ref } from 'vue';
-import AllyRankingTable from '@/components/ally/AllyRankingTable.vue';
+import AllyRankingTable from '@/components/AllyRankingTable.vue';
 
 const { world } = inject(worldKey) as WorldKey;
 

@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { inject } from 'vue';
-import { world as worldKey, type WorldKey } from '@/keys.js';
-import { parseWorld } from '@/modules/world';
+import { world as worldKey, type WorldKey } from '@/common/keys.js';
+import { useWorldName } from '@/common/functions.js';
 
 const { world } = inject(worldKey) as WorldKey;
 </script>
@@ -10,7 +10,7 @@ const { world } = inject(worldKey) as WorldKey;
 <nav>
     <div>
         <router-link :to="{ name: 'home' }" class="home-page-link">
-            Insidious – {{ parseWorld(world) }}
+            Insidious – {{ useWorldName(world) }}
         </router-link>
     </div>
     <div class="nav-bar-menu">

@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { ref, computed } from 'vue';
-import PlayerVillages from '@/components/player/PlayerVillages.vue';
+import PlayerVillages from '@/components/PlayerVillages.vue';
 
 const props = defineProps<{
     world: string
@@ -10,6 +10,7 @@ const props = defineProps<{
 const player = ref<PlayerInfo | null>(null);
 (async () => {
     const response = await fetch(`/api/query/${props.world}/player/${props.id}`);
+    if (response.status === 404) return;
     player.value = await response.json() as PlayerInfo | null;
 })();
 
