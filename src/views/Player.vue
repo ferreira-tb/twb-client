@@ -15,16 +15,13 @@ const player = ref<PlayerInfo | null>(null);
 })();
 
 // Nome do jogador.
-const playerName = computed(() => {
-    return player.value?.player_name ? player.value.player_name : 'Jogador não encontrado';
-});
-
+const playerName = computed(() => player.value?.player_name ? player.value.player_name : 'Jogador não encontrado');
 // Outros itens.
 const parseNumber = (value: number | undefined) => value ? value.toLocaleString('pt-br') : '0';
+const playerRank = computed(() => parseNumber(player.value?.rank));
 const playerPoints = computed(() => parseNumber(player.value?.points));
 const villageAmount = computed(() => parseNumber(player.value?.village_amount));
 const meanPoints = computed(() => parseNumber(player.value?.mean_points));
-const playerRank = computed(() => parseNumber(player.value?.rank));
 
 // Imagem de perfil.
 const profileImage = ref<string | null>(null);
@@ -69,7 +66,7 @@ const playerLink = { name: 'player', params: { world: props.world, id: props.id 
             <div>
                 <table>
                     <tr>
-                        <th scope="row" colspan="2" class="double-table-header">
+                        <th scope="row" colspan="2" class="colspan-table-header">
                             <router-link :to="playerLink">{{ playerName }}</router-link>
                         </th>
                     </tr>
@@ -86,6 +83,10 @@ const playerLink = { name: 'player', params: { world: props.world, id: props.id 
                         </td>
                     </tr>
                     <tr>
+                        <th scope="row">Ranking</th>
+                        <td>{{ playerRank }}</td>
+                    </tr>
+                    <tr>
                         <th scope="row">Pontos</th>
                         <td>{{ playerPoints }}</td>
                     </tr>
@@ -96,10 +97,6 @@ const playerLink = { name: 'player', params: { world: props.world, id: props.id 
                     <tr>
                         <th scope="row">Média por aldeia</th>
                         <td>{{ meanPoints }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Ranking</th>
-                        <td>{{ playerRank }}</td>
                     </tr>
                 </table>
             </div>
@@ -153,7 +150,7 @@ const playerLink = { name: 'player', params: { world: props.world, id: props.id 
     transform: translate(-50%, -50%);
 }
 
-.double-table-header {
+.colspan-table-header {
     text-align: center !important;
     padding-right: 0 !important;
     padding-bottom: 0.5em !important;

@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { inject } from 'vue';
 import * as key from '@/common/keys';
-import { useWorldName } from '@/common/functions.js';
+import { useWorldName } from '@/common/helpers.js';
 import StandardButton from '@/components/StandardButton.vue';
 
 const allWorlds = inject(key.allWorlds, []);

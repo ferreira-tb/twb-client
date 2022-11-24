@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { inject } from 'vue';
 import { world as worldKey, type WorldKey } from '@/common/keys.js';
-import { useWorldName } from '@/common/functions.js';
+import { useWorldName } from '@/common/helpers.js';
 
 const { world } = inject(worldKey) as WorldKey;
 </script>
