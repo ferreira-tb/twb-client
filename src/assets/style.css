@@ -4,6 +4,17 @@
     --main-color: #e1e1e1;
     --sec-color: #42b883;
     --sec-color-lighter: #4cf0a6;
+    --sec-color-darker: #3ea778;
+
+    --main-border-color: #363636;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
 }
 
 /** Classes globais */
@@ -46,8 +57,4 @@ a:link, a:visited {
 
 a:hover {
     color: var(--sec-color-lighter);
-}
-
-td, th {
-    color: var(--main-color);
 }

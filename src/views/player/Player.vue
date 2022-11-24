@@ -18,19 +18,6 @@ const playerName = computed(() => {
     return player.value?.player_name ? player.value.player_name : 'Jogador não encontrado';
 });
 
-// Nome da tribo.
-const noAlly = ref<boolean>(true);
-const allyName = computed(() => {
-    const fullName = player.value?.ally_name;
-    if (!fullName) return 'Nenhuma';
-    noAlly.value = false;
-
-    const allyTag = player.value?.ally_tag;
-    if (allyTag) return `${fullName} (${allyTag})`;
-
-    return fullName;
-});
-
 // Outros itens.
 const parseNumber = (value: number | undefined) => value ? value.toLocaleString('pt-br') : '0';
 const playerPoints = computed(() => parseNumber(player.value?.points));
@@ -87,7 +74,15 @@ const playerLink = { name: 'player', params: { world: props.world, id: props.id 
                     </tr>
                     <tr>
                         <th scope="row">Tribo</th>
-                        <td :class="{ italic: noAlly }">{{ allyName }}</td>
+                        <td>
+                            <template v-if="player?.ally_name">
+                                <router-link :to="{ name: 'ally', params: { world: props.world, id: player.ally_id } }">
+                                    {{ player.ally_name }}
+                                </router-link>
+                                {{ ` — ${player.ally_tag}` }}
+                            </template>
+                            <template v-else>—</template>
+                        </td>
                     </tr>
                     <tr>
                         <th scope="row">Pontos</th>
@@ -123,7 +118,9 @@ const playerLink = { name: 'player', params: { world: props.world, id: props.id 
     position: absolute;
     top: 0;
     display: flex;
-    margin-top: 1em;
+    margin-top: 0.5em;
+    width: 100%;
+    border-bottom: 1px solid var(--main-border-color);
 }
 
 .villages-container {
@@ -145,6 +142,7 @@ const playerLink = { name: 'player', params: { world: props.world, id: props.id 
     width: 270px;
     height: 180px;
     margin-right: 1em;
+    margin-bottom: 0.5em;
 }
 
 .profile-image {

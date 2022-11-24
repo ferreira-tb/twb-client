@@ -16,7 +16,7 @@ import NavBar from '@/components/NavBar.vue';
     top: 0;
     height: 30px;
     width: 100%;
-    border-bottom: 1px solid #363636;
+    border-bottom: 1px solid var(--main-border-color);
 }
 
 main {

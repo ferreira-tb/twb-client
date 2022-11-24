@@ -15,14 +15,18 @@ const params = (value: number) => {
 <template>
     <tr v-for="conquest of props.conquests">
         <td> {{ conquest.time }}</td>
-        <td> {{ conquest.village }} </td>
+        <td>
+            <router-link :to="{ name: 'village', params: { world: world, id: conquest.raw.village_id } }">
+                {{ conquest.village }}
+            </router-link>
+        </td>
         <td> {{ conquest.village_points }} </td>
         <td>
             <router-link v-if="conquest.raw.old_owner_id !== 0" :to="params(conquest.raw.old_owner_id)">
                 {{ conquest.old_owner }}
             </router-link>
             
-            <span v-else>{{ conquest.old_owner }}</span>
+            <span v-else class="italic">{{ conquest.old_owner }}</span>
             {{ conquest.old_tribe ? ` (${conquest.old_tribe})` : '' }}
         </td>
         <td>
