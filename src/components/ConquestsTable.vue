@@ -17,7 +17,7 @@ const params = (value: number) => {
     <table class="conquests-table">
         <thead class="sticky-table-header">
             <tr>
-                <th>Hora</th>
+                <th>Data</th>
                 <th v-if="props.hideVillage !== true">Aldeia</th>
                 <th>Pontos</th>
                 <th>Proprietário anterior</th>

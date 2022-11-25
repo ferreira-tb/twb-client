@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { computed, inject, ref } from 'vue';
+import { computed, inject, ref, watch } from 'vue';
 import { badStatus as badStatusKey } from '@/common/keys.js';
 import ConquestsTable from '@/components/ConquestsTable.vue';
 
@@ -48,20 +48,33 @@ const villageConquests = ref<ConquerInfo[] | null>(null);
     };
 })();
 
+const profile = ref<HTMLDivElement | null>(null);
+const distanceFromTop = ref(180);
+watch(villageConquests, () => {
+    if (profile.value) {
+        const size = profile.value.getBoundingClientRect();
+        distanceFromTop.value = size.height + 15;
+    }; 
+});
+
+const conquestsStyle = computed(() => {
+    return { top: `${distanceFromTop.value.toString(10)}px` };
+});
+
 const allyLink = computed(() => {
-    const allyID = ref(village.value?.ally_id);
-    return { name: 'ally', params: { world: props.world, id: allyID.value } };
+    const allyID = village.value?.ally_id;
+    return { name: 'ally', params: { world: props.world, id: allyID } };
 });
 const playerLink = computed(() => {
-    const playerID = ref(village.value?.player_id);
-    return { name: 'player', params: { world: props.world, id: playerID.value } };
+    const playerID = village.value?.player_id;
+    return { name: 'player', params: { world: props.world, id: playerID } };
 });
 const villageLink = { name: 'village', params: { world: props.world, id: props.id } };
 </script>
 
 <template>
     <div class="village-view">
-        <div class="village-profile-container">
+        <div class="village-profile-container" ref="profile">
             <table>
                 <tr>
                     <th scope="row" colspan="2" class="colspan-table-header">
@@ -102,7 +115,7 @@ const villageLink = { name: 'village', params: { world: props.world, id: props.i
                 </tr>
             </table>
         </div>
-        <div class="conquests-container">
+        <div class="conquests-container" :style="conquestsStyle">
             <template v-if="villageConquests && villageConquests.length > 0">
                 <ConquestsTable :conquests="villageConquests" :hide-village="true"/>
             </template>
@@ -129,7 +142,6 @@ const villageLink = { name: 'village', params: { world: props.world, id: props.i
 
 .conquests-container {
     position: absolute;
-    top: 200px;
     bottom: 0;
     right: 0;
     left: 0;

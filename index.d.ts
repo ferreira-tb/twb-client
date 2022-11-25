@@ -32,6 +32,7 @@ interface AllyInfo {
     readonly rank: number;
     readonly points_per_member: number;
     readonly points_per_village: number;
+    readonly active: boolean;
 }
 
 interface PlayerInfo {
@@ -44,6 +45,7 @@ interface PlayerInfo {
     readonly points: number;
     readonly mean_points: number;
     readonly rank: number;
+    readonly active: boolean;
 }
 
 interface VillageInfo {
@@ -57,6 +59,7 @@ interface VillageInfo {
     readonly player_name: string | null;
     readonly points: number;
     readonly type: number;
+    readonly active: boolean;
 }
 
 interface ExtendedVillageInfo extends VillageInfo {
