@@ -7,3 +7,4 @@ export interface WorldKey {
 
 export const world = Symbol() as InjectionKey<WorldKey>;
 export const allWorlds = Symbol() as InjectionKey<Readonly<string[]>>;
+export const badStatus = Symbol() as InjectionKey<Readonly<Set<number>>>;

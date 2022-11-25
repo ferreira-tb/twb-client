@@ -1,6 +1,6 @@
 <script setup lang='ts'>
-import { world as worldKey, type WorldKey } from '@/common/keys.js';
 import { inject } from 'vue';
+import { world as worldKey, type WorldKey } from '@/common/keys.js';
 
 const props = defineProps<{
     allies: AllyInfo[]

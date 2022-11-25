@@ -1,18 +1,27 @@
 <script setup lang='ts'>
-import { world as worldKey, type WorldKey } from '@/common/keys.js';
-import { inject, ref, type Ref } from 'vue';
+import { inject, ref } from 'vue';
+import * as keys from '@/common/keys.js';
 import AllyRankingTable from '@/components/AllyRankingTable.vue';
 
-const { world } = inject(worldKey) as WorldKey;
+const { world } = inject(keys.world) as keys.WorldKey;
+const badStatus = inject(keys.badStatus) as Readonly<Set<number>>;
 
 const allyRanking = ref<AllyInfo[] | null>(null);
 const isLoading = ref<boolean>(true);
 (async () => {
-    const response = await fetch(`/api/query/${world.value}/ally`);
-    const allies = await response.json() as AllyInfo[] | null;
+    try {
+        const response = await fetch(`/api/query/${world.value}/ally`);
+        if (badStatus.has(response.status)) return;
 
-    allyRanking.value = allies;
-    isLoading.value = false;
+        const allies = await response.json() as AllyInfo[];
+        allyRanking.value = allies;
+
+    } catch (err) {
+        if (err instanceof Error) throw err;
+    
+    } finally {
+        isLoading.value = false;
+    };
 })();
 </script>
 

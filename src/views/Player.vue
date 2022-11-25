@@ -1,5 +1,6 @@
 <script setup lang='ts'>
-import { ref, computed } from 'vue';
+import { ref, computed, inject } from 'vue';
+import { badStatus as badStatusKey } from '@/common/keys.js';
 import PlayerVillages from '@/components/PlayerVillages.vue';
 
 const props = defineProps<{
@@ -7,11 +8,12 @@ const props = defineProps<{
     id: string
 }>();
 
+const badStatus = inject(badStatusKey) as Readonly<Set<number>>;
 const player = ref<PlayerInfo | null>(null);
 (async () => {
     const response = await fetch(`/api/query/${props.world}/player/${props.id}`);
-    if (response.status === 404) return;
-    player.value = await response.json() as PlayerInfo | null;
+    if (badStatus.has(response.status)) return;
+    player.value = await response.json() as PlayerInfo;
 })();
 
 // Nome do jogador.
@@ -44,13 +46,23 @@ const profileImage = ref<string | null>(null);
     };
 })();
 
+const isLoading = ref<boolean>(true);
 const playerVillages = ref<VillageInfo[] | null>(null);
 (async () => {
-    const response = await fetch(`/api/query/${props.world}/player/${props.id}/villages`);
-    if (response.status === 404) return;
-    const villages = await response.json() as VillageInfo[] | null;
-    if (Array.isArray(villages) && villages.length > 0) {
-        playerVillages.value = villages;
+    try {
+        const response = await fetch(`/api/query/${props.world}/player/${props.id}/villages`);
+        if (badStatus.has(response.status)) return;
+
+        const villages = await response.json() as VillageInfo[];
+        if (Array.isArray(villages) && villages.length > 0) {
+            playerVillages.value = villages;
+        };
+
+    } catch (err) {
+        if (err instanceof Error) throw err;
+
+    } finally {
+        isLoading.value = false;
     };
 })();
 
@@ -101,8 +113,12 @@ const playerLink = { name: 'player', params: { world: props.world, id: props.id 
                 </table>
             </div>
         </div>
-        <div v-if="playerVillages" class="villages-container">
-            <PlayerVillages :villages="playerVillages"/>
+        <div class="villages-container">  
+            <template v-if="playerVillages && playerVillages.length > 0">
+                <PlayerVillages :villages="playerVillages"/>
+            </template>
+            <p class="italic" v-else-if="isLoading">Carregando...</p>
+            <p class="italic" v-else>Nenhuma aldeia encontrada.</p> 
         </div>
     </div>
 </template>
@@ -129,6 +145,7 @@ const playerLink = { name: 'player', params: { world: props.world, id: props.id 
     left: 0;
     overflow-y: scroll;
     overflow-x: hidden;
+    text-align: center;
 }
 
 .user-profile-container th {

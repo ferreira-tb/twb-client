@@ -5,12 +5,18 @@ import App from '@/App.vue';
 
 const app = createApp(App);
 
+// Mundo atual.
 const world = ref<string>('116');
 const switchWorld = (otherWorld: string) => world.value = otherWorld;
 app.provide(key.world, { world: readonly(world), switchWorld });
 
+// Todos os mundos.
 const allWorlds = reactive<string[]>([]);
 app.provide(key.allWorlds, readonly(allWorlds));
+
+// Status HTTP.
+const badStatus = reactive(new Set([204, 404]));
+app.provide(key.badStatus, readonly(badStatus));
 
 (async () => {
     const response = await fetch('/api/worlds');

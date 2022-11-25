@@ -1,18 +1,27 @@
 <script setup lang='ts'>
-import { world as worldKey, type WorldKey } from '@/common/keys.js';
 import { inject, ref } from 'vue';
+import * as keys from '@/common/keys.js';
 import ConquestsTable from '@/components/ConquestsTable.vue';
 
-const { world } = inject(worldKey) as WorldKey;
+const { world } = inject(keys.world) as keys.WorldKey;
+const badStatus = inject(keys.badStatus) as Readonly<Set<number>>;
 
 const lastConquests = ref<ConquerInfo[] | null>(null);
 const isLoading = ref<boolean>(true);
 (async () => {
-    const response = await fetch(`/api/interface/${world.value}/get_conquer`);
-    const conquests = await response.json() as ConquerInfo[] | null;
+    try {
+        const response = await fetch(`/api/interface/${world.value}/get_conquer`);
+        if (badStatus.has(response.status)) return;
 
-    lastConquests.value = conquests;
-    isLoading.value = false;
+        const conquests = await response.json() as ConquerInfo[];
+        lastConquests.value = conquests;
+
+    } catch (err) {
+        if (err instanceof Error) throw err;
+
+    } finally {
+        isLoading.value = false;
+    };
 })();
 </script>
 

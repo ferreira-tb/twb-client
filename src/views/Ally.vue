@@ -1,12 +1,14 @@
 <script setup lang='ts'>
-import { computed, ref } from 'vue';
+import { computed, inject, ref } from 'vue';
 import AllyMembers from '@/components/AllyMembers.vue';
+import { badStatus as badStatusKey } from '@/common/keys.js';
 
 const props = defineProps<{
     world: string
     id: string
 }>();
 
+const badStatus = inject(badStatusKey) as Readonly<Set<number>>;
 const ally = ref<AllyInfo | null>(null);
 (async () => {
     const response = await fetch(`/api/query/${props.world}/ally/${props.id}`);
@@ -31,7 +33,7 @@ const pointsPerVillage = computed(() => parseNumber(ally.value?.points_per_villa
 const allyImage = ref<string | null>(null);
 (async () => {
     const response = await fetch(`/api/game/${props.world}/ally/${props.id}/profile`);
-    if (response.status === 404) return;
+    if (badStatus.has(response.status)) return;
     const page = await response.text();
 
     const parser = new DOMParser();
@@ -49,13 +51,23 @@ const allyImage = ref<string | null>(null);
     };
 })();
 
+const isLoading = ref<boolean>(true);
 const allyMembers = ref<PlayerInfo[] | null>(null);
 (async () => {
-    const response = await fetch(`/api/query/${props.world}/ally/${props.id}/members`);
-    if (response.status === 404) return;
-    const members = await response.json() as PlayerInfo[] | null;
-    if (Array.isArray(members) && members.length > 0) {
-        allyMembers.value = members;
+    try {
+        const response = await fetch(`/api/query/${props.world}/ally/${props.id}/members`);
+        if (badStatus.has(response.status)) return;
+
+        const members = await response.json() as PlayerInfo[] | null;
+        if (Array.isArray(members) && members.length > 0) {
+            allyMembers.value = members;
+        };
+
+    } catch (err) {
+        if (err instanceof Error) throw err;
+
+    } finally {
+        isLoading.value = false;
     };
 })();
 
@@ -106,8 +118,12 @@ const allyLink = { name: 'ally', params: { world: props.world, id: props.id } };
                 </table>
             </div>
         </div>
-        <div v-if="allyMembers" class="members-container">
-            <AllyMembers :members="allyMembers"/>
+        <div class="members-container">
+            <template v-if="allyMembers && allyMembers.length > 0">
+                <AllyMembers :members="allyMembers"/>
+            </template>
+            <p class="italic" v-else-if="isLoading">Carregando...</p>
+            <p class="italic" v-else>Nenhuma membro encontrado.</p> 
         </div>
     </div>
 </template>
@@ -133,6 +149,7 @@ const allyLink = { name: 'ally', params: { world: props.world, id: props.id } };
     left: 0;
     overflow-y: scroll;
     overflow-x: hidden;
+    text-align: center;
 }
 
 .ally-profile-container tr {

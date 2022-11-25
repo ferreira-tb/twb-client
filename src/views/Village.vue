@@ -1,5 +1,6 @@
 <script setup lang='ts'>
-import { computed, ref } from 'vue';
+import { computed, inject, ref } from 'vue';
+import { badStatus as badStatusKey } from '@/common/keys.js';
 import ConquestsTable from '@/components/ConquestsTable.vue';
 
 const props = defineProps<{
@@ -7,11 +8,12 @@ const props = defineProps<{
     id: string
 }>();
 
+const badStatus = inject(badStatusKey) as Readonly<Set<number>>;
 const village = ref<ExtendedVillageInfo | null>(null);
 (async () => {
     const response = await fetch(`/api/query/${props.world}/village/${props.id}`);
-    if (response.status === 404) return;
-    village.value = await response.json() as ExtendedVillageInfo | null;
+    if (badStatus.has(response.status)) return;
+    village.value = await response.json() as ExtendedVillageInfo;
 })();
 
 // Informações sobre a aldeia.
@@ -25,20 +27,35 @@ const allyName = computed(() => village.value?.ally_name ? village.value?.ally_n
 const parseNumber = (value: number | undefined) => value ? value.toLocaleString('pt-br') : '0';
 const villagePoints = computed(() => parseNumber(village.value?.points));
 
-const villageConquests = ref<ConquerInfo[] | null>(null);
 const isLoading = ref<boolean>(true);
+const villageConquests = ref<ConquerInfo[] | null>(null);
 (async () => {
-    const response = await fetch(`/api/query/${props.world}/village/${props.id}/conquests`);
-    if (response.status === 404) return;
-    const rawConquests = await response.json() as (ConquerInfo | null)[];
-    if (Array.isArray(rawConquests) && rawConquests.length > 0) {
-        const conquests = rawConquests.filter((conquer) => conquer) as ConquerInfo[];
-        villageConquests.value = conquests;
-    };
+    try {
+        const response = await fetch(`/api/query/${props.world}/village/${props.id}/conquests`);
+        if (badStatus.has(response.status)) return;
 
-    isLoading.value = false;
+        const rawConquests = await response.json() as (ConquerInfo | null)[];
+        if (Array.isArray(rawConquests) && rawConquests.length > 0) {
+            const conquests = rawConquests.filter((conquer) => conquer) as ConquerInfo[];
+            villageConquests.value = conquests;
+        };
+
+    } catch (err) {
+        if (err instanceof Error) throw err;
+
+    } finally {
+        isLoading.value = false;
+    };
 })();
 
+const allyLink = computed(() => {
+    const allyID = ref(village.value?.ally_id);
+    return { name: 'ally', params: { world: props.world, id: allyID.value } };
+});
+const playerLink = computed(() => {
+    const playerID = ref(village.value?.player_id);
+    return { name: 'player', params: { world: props.world, id: playerID.value } };
+});
 const villageLink = { name: 'village', params: { world: props.world, id: props.id } };
 </script>
 
@@ -67,10 +84,7 @@ const villageLink = { name: 'village', params: { world: props.world, id: props.i
                 <tr>
                     <th scope="row">Jogador</th>
                     <td>
-                        <router-link
-                            v-if="village && village.player_id !== 0"
-                            :to="{ name: 'player', params: { world: props.world, id: village.player_id } }"
-                        >
+                        <router-link v-if="village && village.player_id !== 0" :to="playerLink">
                             {{ playerName }}
                         </router-link>
                         <template v-else>{{ playerName }}</template>
@@ -80,10 +94,7 @@ const villageLink = { name: 'village', params: { world: props.world, id: props.i
                 <tr v-if="village?.player_name">
                     <th scope="row">Tribo</th>
                     <td>
-                        <router-link
-                            v-if="village.ally_id"
-                            :to="{ name: 'ally', params: { world: props.world, id: village.ally_id } }"
-                        >
+                        <router-link v-if="village.ally_id" :to="allyLink">
                             {{ allyName }}
                         </router-link>
                         <template v-else>{{ allyName }}</template>
@@ -92,10 +103,9 @@ const villageLink = { name: 'village', params: { world: props.world, id: props.i
             </table>
         </div>
         <div class="conquests-container">
-            <template v-if="villageConquests">
+            <template v-if="villageConquests && villageConquests.length > 0">
                 <ConquestsTable :conquests="villageConquests" :hide-village="true"/>
             </template>
-            
             <p class="italic" v-else-if="isLoading">Carregando...</p>
             <p class="italic" v-else>Nenhuma conquista registrada.</p>  
         </div>
@@ -125,6 +135,7 @@ const villageLink = { name: 'village', params: { world: props.world, id: props.i
     left: 0;
     overflow-y: scroll;
     overflow-x: hidden;
+    text-align: center;
 }
 
 .village-profile-container table {

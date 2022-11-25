@@ -56,7 +56,7 @@ const params = (value: number) => {
     </table>
 </template>
 
-<style>
+<style scoped>
 .conquests-table {
     width: 100%;
     text-align: center;
