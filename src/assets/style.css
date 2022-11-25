@@ -17,6 +17,25 @@ html {
     box-sizing: inherit;
 }
 
+/** Elementos */
+body {
+    background-color: var(--main-bg-color);
+    color: var(--main-color);
+}
+
+a {
+    outline: none;
+    text-decoration: none;
+}
+
+a:link, a:visited {
+    color: var(--sec-color);
+}
+
+a:hover {
+    color: var(--sec-color-lighter);
+}
+
 /** Classes globais */
 .main-color {
     color: var(--main-color);
@@ -40,21 +59,9 @@ html {
     padding-bottom: 0.5em;
 }
 
-/** Elementos */
-body {
-    background-color: var(--main-bg-color);
-    color: var(--main-color);
-}
-
-a {
-    outline: none;
-    text-decoration: none;
-}
-
-a:link, a:visited {
-    color: var(--sec-color);
-}
-
-a:hover {
-    color: var(--sec-color-lighter);
+.colspan-table-header {
+    text-align: center !important;
+    padding-right: 0 !important;
+    padding-bottom: 0.5em !important;
+    font-size: larger;
 }

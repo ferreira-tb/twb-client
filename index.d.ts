@@ -8,7 +8,7 @@ interface Conquer {
     readonly points: number;
 }
 
-// Após oo filtro presente no construtor da classe,
+// Após o filtro presente no construtor da classe,
 // apenas "old_tribe" e "new_tribe" podem ser "null".
 interface ConquerInfo {
     readonly time: string;
@@ -54,7 +54,12 @@ interface VillageInfo {
     readonly coords: string;
     readonly continent: string;
     readonly player_id: number;
-    readonly player_name: string;
+    readonly player_name: string | null;
     readonly points: number;
     readonly type: number;
+}
+
+interface ExtendedVillageInfo extends VillageInfo {
+    readonly ally_id: number | null;
+    readonly ally_name: string | null;
 }

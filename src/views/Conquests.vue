@@ -18,20 +18,10 @@ const isLoading = ref<boolean>(true);
 
 <template>
     <div class="conquests-container">
-        <table v-if="lastConquests" class="conquests-table">
-            <thead class="sticky-table-header">
-                <tr>
-                    <th>Hora</th>
-                    <th>Aldeia</th>
-                    <th>Pontos</th>
-                    <th>Proprietário anterior</th>
-                    <th>Novo proprietário</th>
-                </tr>
-            </thead>
-            <tbody>
-                <ConquestsTable :conquests="lastConquests"/>
-            </tbody>
-        </table>
+        <template v-if="lastConquests">
+            <ConquestsTable :conquests="lastConquests"/>
+        </template>
+        
         <p class="italic" v-else-if="isLoading">Carregando...</p>
         <p class="italic" v-else>Nenhuma conquista registrada.</p>
     </div>
@@ -41,10 +31,5 @@ const isLoading = ref<boolean>(true);
 .conquests-container {
     margin-top: 0.5em;
     text-align: center;
-}
-
-.conquests-table {
-    width: 100%;
-    margin-bottom: 2em;
 }
 </style>

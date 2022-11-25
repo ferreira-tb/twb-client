@@ -161,11 +161,4 @@ const allyLink = { name: 'ally', params: { world: props.world, id: props.id } };
     left: 50%;
     transform: translate(-50%, -50%);
 }
-
-.colspan-table-header {
-    text-align: center !important;
-    padding-right: 0 !important;
-    padding-bottom: 0.5em !important;
-    font-size: larger;
-}
 </style>
